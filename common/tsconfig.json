@@ -1,10 +1,8 @@
 {
   "extends": "@strapi/typescript-utils/tsconfigs/server",
-  "include": ["./src"],
+  "include": ["./src", "./custom.d.ts"],
   "compilerOptions": {
     "rootDir": "../",
-    "baseUrl": ".",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext"
+    "baseUrl": "."
   }
 }

@@ -1,10 +1,26 @@
-import contentAPIRoutes from './content-api';
-
-const routes = {
-  'content-api': {
-    type: 'content-api',
-    routes: contentAPIRoutes,
+export default [
+  {
+    method: 'GET',
+    path: '/settings',
+    handler: 'settings.getSettings',
+    config: {
+      policies: [],
+    },
   },
-};
-
-export default routes;
+  {
+    method: 'PUT',
+    path: '/settings',
+    handler: 'settings.updateSettings',
+    config: {
+      policies: [],
+    },
+  },
+  {
+    method: 'PUT',
+    path: '/settings/restore',
+    handler: 'settings.restoreConfig',
+    config: {
+      policies: [],
+    },
+  },
+];
