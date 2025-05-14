@@ -2,7 +2,13 @@ import service from './service';
 import settings from './settings.service';
 import upload from './upload.service';
 
-const pluginService = {
+export type PluginServiceType = {
+  service: typeof service;
+  settings: typeof settings;
+  upload: typeof upload;
+};
+
+const pluginService: PluginServiceType = {
   service,
   settings,
   upload,

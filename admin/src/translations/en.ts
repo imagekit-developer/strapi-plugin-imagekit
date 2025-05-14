@@ -79,6 +79,9 @@ const en = {
           },
         },
       },
+      actions: {
+        save: 'Save',
+      },
     },
   },
   components: {
