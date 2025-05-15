@@ -9,14 +9,7 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => {
       return settingsService.getSettings();
     },
     updateSettings: async (ctx) => {
-      const { publicKey, privateKey, urlEndpoint, isPrivate, uploadEnabled } = ctx.request.body;
-      return settingsService.updateSettings({
-        publicKey,
-        privateKey,
-        urlEndpoint,
-        isPrivate,
-        uploadEnabled,
-      });
+      return settingsService.updateSettings(ctx.request.body);
     },
     restoreConfig: async (ctx) => {
       return settingsService.restoreConfig();

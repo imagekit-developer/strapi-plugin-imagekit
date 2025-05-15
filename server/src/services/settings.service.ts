@@ -28,11 +28,23 @@ const settingsService = ({ strapi }: { strapi: Core.Strapi }) => {
   function getLocalConfig(): Settings {
     const plugin = strapi.plugin(PLUGIN_ID);
     return {
+      enabled: plugin.config<boolean>('enabled', false),
       publicKey: plugin.config<string>('publicKey', ''),
       privateKey: plugin.config<string>('privateKey', ''),
       urlEndpoint: plugin.config<string>('urlEndpoint', ''),
       isPrivate: plugin.config<boolean>('isPrivate', false),
       uploadEnabled: plugin.config<boolean>('uploadEnabled', false),
+      expiry: plugin.config<number>('expiry', 0),
+      uploadOptions: {
+        tags: plugin.config<string[]>('uploadOptions.tags', []),
+        folder: plugin.config<string>('uploadOptions.folder', ''),
+        overwriteTags: plugin.config<boolean>('uploadOptions.overwriteTags', false),
+        overwriteCustomMetadata: plugin.config<boolean>(
+          'uploadOptions.overwriteCustomMetadata',
+          false
+        ),
+        checks: plugin.config<string>('uploadOptions.checks', ''),
+      },
     };
   }
 

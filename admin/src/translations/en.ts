@@ -1,4 +1,5 @@
 const en = {
+  name: 'ImageKit',
   page: {
     settings: {
       state: {
@@ -25,9 +26,9 @@ const en = {
         },
       },
       header: {
-        title: 'Imagekit.io Settings',
+        title: 'ImageKit.io Settings',
         description:
-          'This integration allows you to easily use Imagekit.io in Strapi. For more information about configuring the app, see our {link}',
+          'This integration allows you to easily use ImageKit in Strapi. For more information about configuring the app, see our {link}',
         link: 'documentation',
       },
       sections: {
@@ -36,7 +37,7 @@ const en = {
             title: 'Base configuration',
             enabled: {
               label: 'Deliver media using ImageKit',
-              hint: 'Enable delivery of media using ImageKit',
+              hint: 'Optimize and deliver media assets through ImageKit',
             },
             urlEndpoint: {
               label: 'ImageKit URL Endpoint',
@@ -49,7 +50,21 @@ const en = {
             },
             isPrivate: {
               label: 'Use signed urls',
-              hint: 'Deliver images using signed urls',
+              hint: 'Secure your media with time-limited signed URLs',
+            },
+            expiry: {
+              label: 'URL Expiry Time',
+              hint: 'Duration in seconds before signed URLs expire (0 means never expire)',
+              errors: {
+                format: 'Please provide a valid number of seconds',
+              },
+            },
+            useTransformUrls: {
+              label: 'Use ImageKit Transformations for Responsive URLs',
+              hint: 'Enable this to use ImageKit transformations when generating responsive image URLs',
+              errors: {
+                required: 'Field is required',
+              },
             },
           },
           upload: {
@@ -74,6 +89,45 @@ const en = {
               errors: {
                 format: 'Please provide a valid Private Key and must start with "private_"',
                 required: 'Field is required',
+              },
+            },
+          },
+          uploadOptions: {
+            title: 'Upload Options',
+            description: 'Configure options that will be used when uploading files to ImageKit.',
+            tags: {
+              label: 'Tags',
+              hint: 'Comma separated list of tags to apply to the uploaded file.',
+              errors: {
+                format: 'Please provide a valid list of tags',
+              },
+            },
+            folder: {
+              label: 'Upload Folder',
+              hint: 'Base folder path in ImageKit where files will be uploaded. This will be combined with Strapi folders if they exist.',
+              errors: {
+                format: 'Please provide a valid folder path',
+              },
+            },
+            overwriteTags: {
+              label: 'Overwrite Tags',
+              hint: 'If set to true, existing tags will be overwritten.',
+              errors: {
+                format: 'Please provide a valid boolean value',
+              },
+            },
+            overwriteCustomMetadata: {
+              label: 'Overwrite Custom Metadata',
+              hint: 'If set to true, existing custom metadata will be overwritten.',
+              errors: {
+                format: 'Please provide a valid boolean value',
+              },
+            },
+            checks: {
+              label: 'Checks',
+              hint: 'Comma-separated list of the checks you want to run on the file.',
+              errors: {
+                format: 'Please provide a valid list of checks',
               },
             },
           },
