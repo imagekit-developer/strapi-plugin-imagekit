@@ -8531,6 +8531,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"imagekit-media-library-widget@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "imagekit-media-library-widget@npm:2.1.1"
+  checksum: 10c0/0df3256aa4c068dd8148fade98e742209a91421a689871d38ff26e94982785ab86b2c4658e1a2006054e115fc2e9da9bbd9d08bc1f7797e249843cbfbe7cf9ac
+  languageName: node
+  linkType: hard
+
 "imagekit@npm:^6.0.0":
   version: 6.0.0
   resolution: "imagekit@npm:6.0.0"
@@ -13304,12 +13311,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"strapi-plugin-imagekit@link:.yalc/strapi-plugin-imagekit::locator=strapi-plugin-imagekit%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "strapi-plugin-imagekit@link:.yalc/strapi-plugin-imagekit::locator=strapi-plugin-imagekit%40workspace%3A."
-  languageName: node
-  linkType: soft
-
 "strapi-plugin-imagekit@workspace:.":
   version: 0.0.0-use.local
   resolution: "strapi-plugin-imagekit@workspace:."
@@ -13325,13 +13326,13 @@ __metadata:
     "@types/react-dom": "npm:^19.1.4"
     formik: "npm:^2.4.6"
     imagekit: "npm:^6.0.0"
+    imagekit-media-library-widget: "npm:^2.1.1"
     lodash: "npm:^4.17.21"
     prettier: "npm:^3.5.3"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     react-intl: "npm:^7.1.11"
     react-router-dom: "npm:^6.30.0"
-    strapi-plugin-imagekit: "link:.yalc/strapi-plugin-imagekit"
     styled-components: "npm:^6.1.18"
     typescript: "npm:^5.8.3"
     zod: "npm:^3.24.4"

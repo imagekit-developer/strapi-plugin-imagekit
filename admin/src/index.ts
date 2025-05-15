@@ -19,9 +19,9 @@ export default {
         { action: 'plugin::upload.assets.update', subject: null },
       ],
       Component: async () => {
-        const { SettingsPageWrapper } = await import('./pages/Settings');
+        const { MediaLibraryPageWrapper } = await import('./pages/MediaLibrary');
 
-        return SettingsPageWrapper;
+        return MediaLibraryPageWrapper;
       },
     });
 
