@@ -23,4 +23,13 @@ export default [
       policies: [],
     },
   },
+  {
+    method: 'POST',
+    path: '/webhook',
+    handler: 'webhook.handleWebhook',
+    config: {
+      policies: [],
+      auth: false, // Disable authentication for webhook endpoint
+    },
+  },
 ];

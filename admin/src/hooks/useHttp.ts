@@ -7,7 +7,7 @@ import { removeLeadingSlash, removeTrailingSlash } from '../utils/url';
 type URLString = `/${string}`;
 
 export const useHTTP = () => {
-  const { get, del, put } = useFetchClient();
+  const { get, del, put, post } = useFetchClient();
 
   const getURL = (url: string) =>
     [
@@ -36,6 +36,15 @@ export const useHTTP = () => {
       }
       const errorResponse = extractError(response);
       const error = new HttpError('Failed to fetch', errorResponse.details);
+      return Promise.reject(error);
+    },
+    async post<Body = unknown, Response = unknown>(url: URLString, body: Body): Promise<Response> {
+      const response = await post(getURL(url), body);
+      if (isOk(response)) {
+        return response.data;
+      }
+      const errorResponse = extractError(response);
+      const error = new HttpError('Failed to save/update data', errorResponse.details);
       return Promise.reject(error);
     },
     async put<Body = unknown, Response = unknown>(url: URLString, body: Body): Promise<Response> {
