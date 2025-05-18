@@ -48,8 +48,8 @@ export const SettingsSchema = z
         }),
       z.string().optional(),
     ]),
-    isPrivate: z.boolean({
-      message: 'page.settings.sections.form.base.isPrivate.errors.required',
+    useSignedUrls: z.boolean({
+      message: 'page.settings.sections.form.base.useSignedUrls.errors.required',
     }),
     expiry: z.union([
       z
@@ -108,7 +108,7 @@ export const SettingsSchema = z
       }
     }
 
-    if (data.isPrivate && (data.expiry === undefined || data.expiry < 0)) {
+    if (data.useSignedUrls && (data.expiry === undefined || data.expiry < 0)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'page.settings.sections.form.base.expiry.errors.format',

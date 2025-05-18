@@ -53,14 +53,14 @@ function toImageKitUrl(src: string, settings: Settings, client: ImageKit): strin
   if (src.startsWith(endpoint)) {
     return client.url({
       src,
-      signed: settings.isPrivate,
+      signed: settings.useSignedUrls,
     });
   }
 
   if (src.startsWith('/')) {
     return client.url({
       path: src,
-      signed: settings.isPrivate,
+      signed: settings.useSignedUrls,
     });
   }
 
@@ -96,13 +96,13 @@ function transformFormats(
         transformedUrl = client.url({
           src: path,
           transformation,
-          signed: settings.isPrivate,
+          signed: settings.useSignedUrls,
         });
       } else if (path.startsWith('/')) {
         transformedUrl = client.url({
           path,
           transformation,
-          signed: settings.isPrivate,
+          signed: settings.useSignedUrls,
         });
       }
 

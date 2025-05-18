@@ -18,7 +18,7 @@ type StrapiUploadOptions = Omit<
   | 'responseFields'
   | 'overwriteFile'
   | 'isPublished'
-  | 'isPrivate'
+  | 'isPrivateFile'
   | 'useUniqueFileName'
 > & {
   ignoreStrapiFolders?: boolean;

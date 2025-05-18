@@ -5,7 +5,7 @@ export type SettingsForm = {
   publicKey: string;
   privateKey: string;
   urlEndpoint: string;
-  isPrivate: boolean;
+  useSignedUrls: boolean;
   expiry: number;
   uploadEnabled: boolean;
   uploadOptions: UploadOptionsForm;

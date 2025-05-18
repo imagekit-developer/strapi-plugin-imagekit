@@ -32,7 +32,7 @@ const settingsService = ({ strapi }: { strapi: Core.Strapi }) => {
       publicKey: plugin.config<string>('publicKey', ''),
       privateKey: plugin.config<string>('privateKey', ''),
       urlEndpoint: plugin.config<string>('urlEndpoint', ''),
-      isPrivate: plugin.config<boolean>('isPrivate', false),
+      useSignedUrls: plugin.config<boolean>('useSignedUrls', false),
       uploadEnabled: plugin.config<boolean>('uploadEnabled', false),
       expiry: plugin.config<number>('expiry', 0),
       uploadOptions: {

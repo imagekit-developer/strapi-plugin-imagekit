@@ -52,7 +52,7 @@ const SettingsPage = () => {
       urlEndpoint: response.urlEndpoint,
       publicKey: response.publicKey,
       privateKey: response.privateKey,
-      isPrivate: response.isPrivate,
+      useSignedUrls: response.useSignedUrls,
       uploadEnabled: response.uploadEnabled,
       uploadOptions: response.uploadOptions,
       expiry: response.expiry,
@@ -97,7 +97,7 @@ const SettingsPage = () => {
         publicKey: values.publicKey,
         privateKey: values.privateKey,
         urlEndpoint: values.urlEndpoint,
-        isPrivate: values.isPrivate,
+        useSignedUrls: values.useSignedUrls,
         expiry: values.expiry,
         uploadEnabled: values.uploadEnabled,
         uploadOptions: values.uploadOptions,
@@ -138,7 +138,7 @@ const SettingsPage = () => {
     publicKey: '',
     privateKey: '',
     urlEndpoint: '',
-    isPrivate: false,
+    useSignedUrls: false,
     expiry: 0,
     uploadEnabled: false,
     uploadOptions: {
@@ -347,15 +347,15 @@ const SettingsPage = () => {
                       {values.enabled && (
                         <Grid.Item col={4} xs={12} alignItems="flex-start">
                           <Field
-                            error={errors?.isPrivate}
-                            label={'page.settings.sections.form.base.isPrivate.label'}
+                            error={errors?.useSignedUrls}
+                            label={'page.settings.sections.form.base.useSignedUrls.label'}
                             hint={formatMessage({
-                              id: `${camelCase(PLUGIN_ID)}.page.settings.sections.form.base.isPrivate.hint`,
+                              id: `${camelCase(PLUGIN_ID)}.page.settings.sections.form.base.useSignedUrls.hint`,
                             })}
                           >
                             <Toggle
                               disabled={!values.urlEndpoint}
-                              checked={values.isPrivate}
+                              checked={values.useSignedUrls}
                               offLabel={formatMessage({
                                 id: 'app.components.ToggleCheckbox.off-label',
                                 defaultMessage: 'Off',
@@ -366,14 +366,14 @@ const SettingsPage = () => {
                               })}
                               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 handleChange({
-                                  target: { name: 'isPrivate', value: e.target.checked },
+                                  target: { name: 'useSignedUrls', value: e.target.checked },
                                 });
                               }}
                             />
                           </Field>
                         </Grid.Item>
                       )}
-                      {values.enabled && values.isPrivate && (
+                      {values.enabled && values.useSignedUrls && (
                         <Grid.Item col={8} xs={12} alignItems="flex-start">
                           <Field
                             error={errors?.expiry}

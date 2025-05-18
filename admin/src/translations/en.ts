@@ -48,7 +48,7 @@ const en = {
                 trailingSlash: 'URL should end with a trailing slash',
               },
             },
-            isPrivate: {
+            useSignedUrls: {
               label: 'Use signed urls',
               hint: 'Secure your media with time-limited signed URLs',
             },
