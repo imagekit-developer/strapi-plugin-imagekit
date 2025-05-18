@@ -6,13 +6,21 @@ const settings = {
   change: 'settings.change',
 } as const;
 
-type Settings = typeof settings;
+const mediaLibrary = {
+  read: 'media-library.read',
+} as const;
 
-const render = (uid: Settings[keyof Settings]) => `plugin::${PLUGIN_ID}.${uid}`;
+type Settings = typeof settings;
+type MediaLibrary = typeof mediaLibrary;
+
+type PermissionUid = Settings[keyof Settings] | MediaLibrary[keyof MediaLibrary];
+
+const render = (uid: PermissionUid) => `plugin::${PLUGIN_ID}.${uid}`;
 
 export const permissions = {
   render,
   settings,
+  mediaLibrary,
 } as const;
 
 export type Permissions = typeof permissions;
@@ -20,6 +28,7 @@ export type Permissions = typeof permissions;
 export const pluginPermissions = {
   settings: [{ action: permissions.render(permissions.settings.read), subject: null }],
   settingsChange: [{ action: permissions.render(permissions.settings.change), subject: null }],
+  mediaLibrary: [{ action: permissions.render(permissions.mediaLibrary.read), subject: null }],
 };
 
 export const flattenPermissions = Object.keys(pluginPermissions).reduce(

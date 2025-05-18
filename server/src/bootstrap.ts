@@ -24,13 +24,21 @@ async function addPermissions(strapi: Core.Strapi) {
   const actions = [
     {
       section: 'plugins',
+      displayName: 'Access ImageKit Media Library',
+      uid: permissions.mediaLibrary.read,
+      pluginName: PLUGIN_ID,
+    },
+    {
+      section: 'plugins',
       displayName: 'Settings: Read',
+      subCategory: 'settings',
       uid: permissions.settings.read,
       pluginName: PLUGIN_ID,
     },
     {
       section: 'plugins',
       displayName: 'Settings: Change',
+      subCategory: 'settings',
       uid: permissions.settings.change,
       pluginName: PLUGIN_ID,
     },

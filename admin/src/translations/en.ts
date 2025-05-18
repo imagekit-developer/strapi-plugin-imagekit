@@ -138,6 +138,14 @@ const en = {
       },
     },
   },
+  permissions: {
+    'media-library': {
+      read: {
+        label: 'Media Library',
+        description: 'Access the ImageKit Media Library',
+      },
+    },
+  },
   components: {
     confirmation: {
       dialog: {

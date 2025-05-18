@@ -1,4 +1,4 @@
-import { PLUGIN_ID } from '../../common';
+import { PLUGIN_ID, permissions } from '../../common';
 import ImageKitLogo from './components/ImageKitLogo';
 import { Initializer } from './components/Initializer';
 import trads from './translations';
@@ -14,6 +14,7 @@ export default {
       },
       position: 3,
       permissions: [
+        { action: `plugin::${PLUGIN_ID}.${permissions.mediaLibrary.read}`, subject: null },
         { action: 'plugin::upload.read', subject: null },
         { action: 'plugin::upload.assets.create', subject: null },
         { action: 'plugin::upload.assets.update', subject: null },
