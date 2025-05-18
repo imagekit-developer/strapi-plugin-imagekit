@@ -44,6 +44,7 @@ const settingsService = ({ strapi }: { strapi: Core.Strapi }) => {
           false
         ),
         checks: plugin.config<string>('uploadOptions.checks', ''),
+        isPrivateFile: plugin.config<boolean>('uploadOptions.isPrivateFile', false),
       },
     };
   }

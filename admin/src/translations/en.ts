@@ -130,6 +130,13 @@ const en = {
                 format: 'Please provide a valid list of checks',
               },
             },
+            isPrivateFile: {
+              label: 'Mark files as private',
+              hint: 'If enabled, files will be marked as private in ImageKit and require signed URLs to access',
+              errors: {
+                format: 'Please provide a valid boolean value',
+              },
+            },
           },
         },
       },

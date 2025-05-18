@@ -147,6 +147,7 @@ const SettingsPage = () => {
       overwriteTags: false,
       overwriteCustomMetadata: false,
       checks: '',
+      isPrivateFile: false,
     },
     useTransformUrls: false,
   };
@@ -510,6 +511,7 @@ const SettingsPage = () => {
                       overwriteTags: false,
                       overwriteCustomMetadata: false,
                       checks: '',
+                      isPrivateFile: false,
                     };
 
                     return (
@@ -698,6 +700,44 @@ const SettingsPage = () => {
                                     );
                                   }}
                                   placeholder="unsafe,text,invalid-image"
+                                />
+                              </Field>
+                            </Grid.Item>
+
+                            <Grid.Item col={12} xs={12} alignItems="flex-start">
+                              <Field
+                                error={errors?.uploadOptions?.isPrivateFile}
+                                label={
+                                  'page.settings.sections.form.uploadOptions.isPrivateFile.label'
+                                }
+                                hint={formatMessage({
+                                  id: `${camelCase(PLUGIN_ID)}.page.settings.sections.form.uploadOptions.isPrivateFile.hint`,
+                                  defaultMessage:
+                                    'If enabled, files will be marked as private in ImageKit and require signed URLs to access',
+                                })}
+                              >
+                                <Toggle
+                                  checked={uploadOptions.isPrivateFile || false}
+                                  offLabel={formatMessage({
+                                    id: 'app.components.ToggleCheckbox.off-label',
+                                    defaultMessage: 'Off',
+                                  })}
+                                  onLabel={formatMessage({
+                                    id: 'app.components.ToggleCheckbox.on-label',
+                                    defaultMessage: 'On',
+                                  })}
+                                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    setValues(
+                                      {
+                                        ...values,
+                                        uploadOptions: {
+                                          ...uploadOptions,
+                                          isPrivateFile: e.target.checked,
+                                        },
+                                      },
+                                      false
+                                    );
+                                  }}
                                 />
                               </Field>
                             </Grid.Item>

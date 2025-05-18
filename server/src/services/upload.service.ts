@@ -35,6 +35,7 @@ const ValidUploadParams = [
   'customMetadata',
   'transformation',
   'checks',
+  'isPrivateFile',
 ];
 
 export const toUploadParams = (
@@ -116,6 +117,7 @@ const uploadService = ({ strapi }: { strapi: Core.Strapi }) => {
     }
     const { fileId, url } = fileDetails.data;
     strapi.log.info(`[ImageKit Upload Provider] File uploaded successfully with id ${fileId}`);
+    file.provider = 'imagekit';
     file.url = url;
     file.provider_metadata = { fileId };
   }
@@ -168,6 +170,10 @@ const uploadService = ({ strapi }: { strapi: Core.Strapi }) => {
   }
 
   async function isPrivate() {
+    const settings = await settingsService.getSettings();
+    if (settings.uploadOptions?.isPrivateFile !== undefined) {
+      return settings.uploadOptions?.isPrivateFile;
+    }
     return false;
   }
 
@@ -177,9 +183,11 @@ const uploadService = ({ strapi }: { strapi: Core.Strapi }) => {
       strapi.log.debug(
         `[ImageKit Upload Service] Generating signed URL for file with ID ${file.provider_metadata?.fileId}`
       );
+      const settings = await settingsService.getSettings();
       const imageURL = client.url({
         src: file.url!,
         signed: await isPrivate(),
+        expireSeconds: settings.expiry > 0 ? settings.expiry : undefined,
       });
       return { url: imageURL };
     } catch (err) {

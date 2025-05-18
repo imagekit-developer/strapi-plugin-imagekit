@@ -97,12 +97,14 @@ function transformFormats(
           src: path,
           transformation,
           signed: settings.useSignedUrls,
+          expireSeconds: settings.expiry > 0 ? settings.expiry : undefined,
         });
       } else if (path.startsWith('/')) {
         transformedUrl = client.url({
           path,
           transformation,
           signed: settings.useSignedUrls,
+          expireSeconds: settings.expiry > 0 ? settings.expiry : undefined,
         });
       }
 
@@ -155,19 +157,17 @@ async function registerUploadProvider(strapi: Core.Strapi) {
   const uploadService = getService(strapi, 'upload');
   const settingsService = getService(strapi, 'settings');
 
-  Object.keys(provider).forEach((methodName) => {
+  Object.keys(uploadService).forEach((methodName) => {
     const method = get(uploadService, methodName);
     if (method) {
       const originalMethod = provider[methodName];
       provider[methodName] = async (file: File) => {
         const settings = await settingsService.getSettings();
         if (settings.uploadEnabled) {
-          await method(file);
-        } else {
-          await originalMethod(file);
+          return await method(file);
         }
 
-        return file;
+        return await originalMethod(file);
       };
     }
   });
