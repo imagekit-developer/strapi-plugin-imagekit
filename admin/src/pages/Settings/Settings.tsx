@@ -699,7 +699,7 @@ const SettingsPage = () => {
                                       false
                                     );
                                   }}
-                                  placeholder="unsafe,text,invalid-image"
+                                  placeholder={`"file.size" <= "50MB"`}
                                 />
                               </Field>
                             </Grid.Item>
