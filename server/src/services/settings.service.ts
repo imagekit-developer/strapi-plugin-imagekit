@@ -1,5 +1,6 @@
 import { Core } from '@strapi/strapi';
 import { PLUGIN_ID, Settings } from '../../../common';
+import { clearImageKitClient } from './upload.service';
 
 const settingsService = ({ strapi }: { strapi: Core.Strapi }) => {
   function getPluginStore() {
@@ -22,6 +23,7 @@ const settingsService = ({ strapi }: { strapi: Core.Strapi }) => {
   async function updateSettings(settings: Settings): Promise<Settings> {
     const pluginStore = getPluginStore();
     await pluginStore.set({ key: 'config', value: settings });
+    clearImageKitClient();
     return await getSettings();
   }
 

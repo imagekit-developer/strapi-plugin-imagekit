@@ -5,7 +5,7 @@ import { UploadOptions } from 'imagekit/dist/libs/interfaces';
 import type { ReadStream } from 'node:fs';
 import { join } from 'node:path';
 import { tryCatch } from '../../../common';
-import SettingsService from './settings.service';
+import { getService } from '../utils/getService';
 
 export type File = Parameters<
   ReturnType<ReturnType<typeof StrapiUploadServer>['services']['provider']>['upload']
@@ -65,9 +65,15 @@ export const toUploadParams = (
   return params;
 };
 
+let imagekitClient: ImageKit | null = null;
+
 const uploadService = ({ strapi }: { strapi: Core.Strapi }) => {
-  const settingsService = SettingsService({ strapi });
-  let imagekitClient: ImageKit;
+  const settingsService = getService(strapi, 'settings');
+
+  // Clear the cached ImageKit client
+  function clearImageKitClient() {
+    imagekitClient = null;
+  }
 
   async function getClient() {
     if (!imagekitClient) {
@@ -199,6 +205,11 @@ const uploadService = ({ strapi }: { strapi: Core.Strapi }) => {
   }
 
   return { upload, uploadStream, delete: deleteFile, isPrivate, getSignedUrl, getClient };
+};
+
+// Export the clearImageKitClient function to be used by other services
+export const clearImageKitClient = () => {
+  imagekitClient = null;
 };
 
 export default uploadService;
