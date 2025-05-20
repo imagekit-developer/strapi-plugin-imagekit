@@ -6,6 +6,7 @@
     "rootDir": "../",
     "baseUrl": ".",
     "module": "NodeNext",
-    "moduleResolution": "NodeNext"
+    "moduleResolution": "NodeNext",
+    "isolatedModules": true
   }
 }
