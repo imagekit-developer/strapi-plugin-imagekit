@@ -3,7 +3,6 @@ import { get } from 'lodash';
 import { permissions, PLUGIN_ID } from '../../common';
 import { File } from './services/upload.service';
 import { getService } from './utils/getService';
-
 async function saveConfig(strapi: Core.Strapi) {
   if (strapi.store) {
     const pluginStore = strapi.store({ type: 'plugin', name: PLUGIN_ID });
