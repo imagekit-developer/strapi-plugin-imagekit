@@ -70,11 +70,6 @@ let imagekitClient: ImageKit | null = null;
 const uploadService = ({ strapi }: { strapi: Core.Strapi }) => {
   const settingsService = getService(strapi, 'settings');
 
-  // Clear the cached ImageKit client
-  function clearImageKitClient() {
-    imagekitClient = null;
-  }
-
   async function getClient() {
     if (!imagekitClient) {
       const { publicKey, privateKey, urlEndpoint } = await settingsService.getSettings();
@@ -101,9 +96,10 @@ const uploadService = ({ strapi }: { strapi: Core.Strapi }) => {
 
   async function uploadFile(file: File, fileToUpload: Buffer | ReadStream) {
     const client = await getClient();
+    const settings = await settingsService.getSettings();
     const response = await tryCatch(
       client.upload({
-        ...toUploadParams(file),
+        ...toUploadParams(file, settings.uploadOptions),
         file: fileToUpload,
         fileName: `${file.hash}${file.ext}`,
         useUniqueFileName: false,
