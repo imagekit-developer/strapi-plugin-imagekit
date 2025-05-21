@@ -8,7 +8,26 @@ const settingsService = ({ strapi }: { strapi: Core.Strapi }) => {
       return strapi.store({ type: 'plugin', name: PLUGIN_ID });
     }
     return {
-      get: async () => {},
+      get: async () => {
+        return {
+          enabled: false,
+          publicKey: '',
+          privateKey: '',
+          urlEndpoint: '',
+          useSignedUrls: false,
+          uploadEnabled: false,
+          expiry: 0,
+          uploadOptions: {
+            tags: [],
+            folder: '',
+            overwriteTags: false,
+            overwriteCustomMetadata: false,
+            checks: '',
+            isPrivateFile: false,
+          },
+          useTransformUrls: false,
+        };
+      },
       set: async () => {},
       delete: async () => {},
     };
