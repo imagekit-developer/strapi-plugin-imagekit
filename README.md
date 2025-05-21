@@ -59,7 +59,7 @@ yarn add strapi-plugin-imagekit
 npm install strapi-plugin-imagekit --save
 ```
 
-Once isntalled, you must re-build your Strapi instance.
+Once installed, you must re-build your Strapi instance.
 
 ```bash
 yarn build
