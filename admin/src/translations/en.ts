@@ -67,6 +67,9 @@ const en = {
               },
             },
           },
+          delivery: {
+            title: 'Media Delivery Options',
+          },
           upload: {
             title: 'Upload configuration',
             enabled: {

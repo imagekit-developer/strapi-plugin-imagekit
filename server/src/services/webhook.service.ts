@@ -231,8 +231,8 @@ const webhookService = ({ strapi }: { strapi: Core.Strapi }) => {
         const fileEntity = await strapi.db.query(FILE_MODEL_UID).create({
           data: {
             ...fileEntry,
-            createdAt: createdAt || new Date().toISOString(),
-            updatedAt: updatedAt || new Date().toISOString(),
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
             publishedAt: new Date().toISOString(),
           },
         });

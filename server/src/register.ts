@@ -82,6 +82,11 @@ const convertToImageKitUrls = curry(async (schema: Model, entity: Data) => {
   const settingsService = getService(strapi, 'settings');
   const settings = await settingsService.getSettings();
   const client = await uploadService.getClient();
+
+  if (!settings.enabled) {
+    return entity;
+  }
+
   return traverseEntity(
     (args, functions) => {
       const { schema, key, attribute, path, value, data } = args;
