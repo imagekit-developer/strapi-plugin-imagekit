@@ -163,8 +163,6 @@ const webhookService = ({ strapi }: { strapi: Core.Strapi }) => {
     const ext = path.extname(name);
     const baseName = path.basename(name, ext);
     const hash = `${baseName.replace(/\s+/g, '_')}_${fileId.substring(0, 8)}`;
-    const folderPath =
-      path.dirname(fileData.filePath) === '.' ? '/' : path.dirname(fileData.filePath);
 
     const getBreakpoints = () =>
       strapi.config.get<Record<string, number>>('plugin::upload.breakpoints', {
@@ -219,7 +217,7 @@ const webhookService = ({ strapi }: { strapi: Core.Strapi }) => {
       previewUrl: thumbnail || null,
       provider: 'imagekit',
       provider_metadata: metadata,
-      folderPath,
+      folderPath: '/',
       isUrlSigned: false,
       documentId: isFormat ? undefined : documentId,
     };
