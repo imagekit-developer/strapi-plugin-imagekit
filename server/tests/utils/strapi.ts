@@ -50,4 +50,8 @@ export const getStrapiMock = ({
         },
       },
     },
+    sanitizers: {
+      add: jest.fn(),
+    },
+    getModel: jest.fn(),
   }) as unknown as StrapiMock;

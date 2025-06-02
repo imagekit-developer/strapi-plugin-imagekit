@@ -9,6 +9,10 @@ import { getService } from './utils/getService';
 function toImageKitUrl(src: string, settings: Settings, client: ImageKit): string {
   const endpoint = settings.urlEndpoint;
 
+  if (!endpoint) {
+    return src;
+  }
+
   if (src.startsWith(endpoint)) {
     return client.url({
       src,

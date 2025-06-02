@@ -1,117 +1,200 @@
 import { permissions, PLUGIN_ID } from '../../common';
 import bootstrap from '../src/bootstrap';
-import { settingsServiceMock, uploadServiceMock } from './utils/plugins/imagekit/services';
+import { imagekitMock } from './utils/plugins/imagekit';
+import { uploadServiceMock } from './utils/plugins/imagekit/services';
 import { getStrapiMock } from './utils/strapi';
 
-// Mock the getService utility
-jest.mock('../src/utils/getService', () => ({
-  getService: jest.fn((_, serviceName) => {
-    if (serviceName === 'settings') return settingsServiceMock;
-    if (serviceName === 'upload') return uploadServiceMock;
-    return jest.fn();
-  }),
-}));
-
 describe('Bootstrap', () => {
-  let strapiMock: ReturnType<typeof getStrapiMock>;
-
   beforeEach(() => {
     jest.clearAllMocks();
-    strapiMock = getStrapiMock();
-
-    bootstrap({ strapi: strapiMock });
   });
 
-  describe.only('saveConfig', () => {
-    it('should save default config if no config exists', async () => {
-      expect(strapiMock.store).toHaveBeenCalledTimes(1);
-      expect(strapiMock.store).toHaveBeenCalledWith({ type: 'plugin', name: PLUGIN_ID });
+  describe('saveConfig', () => {
+    describe('when config does not exist in store', () => {
+      const strapiMock = getStrapiMock();
 
-      const get = strapiMock.store.mock.results.find((_) => _.type === 'return')?.value.get;
+      beforeEach(() => bootstrap({ strapi: strapiMock }));
+      it('should save default config if no config exists', async () => {
+        expect(strapiMock.store).toHaveBeenCalledTimes(1);
+        expect(strapiMock.store).toHaveBeenCalledWith({ type: 'plugin', name: PLUGIN_ID });
 
-      expect(get).toHaveBeenCalledTimes(1);
-      expect(get).toHaveBeenCalledWith({ key: 'config' });
+        const get = strapiMock.store.mock.results.find((_) => _.type === 'return')?.value.get;
 
-      console.log(get);
+        expect(get).toHaveBeenCalledTimes(1);
+        expect(get).toHaveBeenCalledWith({ key: 'config' });
+
+        expect(imagekitMock.config).toHaveBeenCalledTimes(14);
+
+        const set = strapiMock.store.mock.results.find((_) => _.type === 'return')?.value.set;
+        expect(set).toHaveBeenCalledTimes(1);
+        expect(set).toHaveBeenCalledWith({
+          key: 'config',
+          value: {
+            enabled: false,
+            publicKey: '',
+            privateKey: '',
+            urlEndpoint: '',
+            useSignedUrls: false,
+            expiry: 0,
+            uploadEnabled: false,
+            uploadOptions: {
+              tags: [],
+              folder: '',
+              overwriteTags: false,
+              overwriteCustomMetadata: false,
+              checks: '',
+              isPrivateFile: false,
+            },
+            useTransformUrls: false,
+          },
+        });
+
+        expect(imagekitMock.config.mock.calls).toEqual([
+          ['enabled', false],
+          ['publicKey', ''],
+          ['privateKey', ''],
+          ['urlEndpoint', ''],
+          ['useSignedUrls', false],
+          ['expiry', 0],
+          ['uploadEnabled', false],
+          ['useTransformUrls', false],
+          ['uploadOptions.tags', []],
+          ['uploadOptions.folder', ''],
+          ['uploadOptions.overwriteTags', false],
+          ['uploadOptions.overwriteCustomMetadata', false],
+          ['uploadOptions.checks', ''],
+          ['uploadOptions.isPrivateFile', false],
+        ]);
+      });
     });
 
-    it('should not overwrite existing config', async () => {
-      // Mock the store to return existing config
-      const existingConfig = {
-        publicKey: 'existing-public-key',
-        privateKey: 'existing-private-key',
-        urlEndpoint: 'https://existing-endpoint.com',
-      };
-      const mockGet = jest.fn().mockResolvedValue(existingConfig);
-      const mockSet = jest.fn().mockResolvedValue(undefined);
+    describe('when config exists in store', () => {
+      const strapiMock = getStrapiMock({ storeConfig: {} });
 
-      const pluginStore = { get: mockGet, set: mockSet };
-      jest.spyOn(strapiMock, 'store').mockReturnValue(pluginStore);
+      beforeEach(() => bootstrap({ strapi: strapiMock }));
+      it('should not overwrite existing config', async () => {
+        expect(strapiMock.store).toHaveBeenCalledTimes(1);
+        expect(strapiMock.store).toHaveBeenCalledWith({ type: 'plugin', name: PLUGIN_ID });
 
-      // Import the function to test
-      const { saveConfig } = require('../src/bootstrap');
-      await saveConfig(strapiMock);
+        const get = strapiMock.store.mock.results.find((_) => _.type === 'return')?.value.get;
 
-      // Verify set was not called
-      expect(mockSet).not.toHaveBeenCalled();
+        expect(get).toHaveBeenCalledTimes(1);
+        expect(get).toHaveBeenCalledWith({ key: 'config' });
+
+        expect(imagekitMock.config).toHaveBeenCalledTimes(0);
+        const set = strapiMock.store.mock.results.find((_) => _.type === 'return')?.value.set;
+        expect(set).toHaveBeenCalledTimes(0);
+      });
     });
   });
 
   describe('addPermissions', () => {
+    const strapiMock = getStrapiMock();
+
+    beforeEach(() => bootstrap({ strapi: strapiMock }));
     it('should register all permissions', async () => {
-      // Mock the permissions service
-      const registerManyMock = jest.fn().mockResolvedValue(undefined);
-      strapiMock.admin = {
-        services: {
-          permission: {
-            actionProvider: {
-              registerMany: registerManyMock,
-            },
+      expect(
+        strapiMock.admin.services.permission.actionProvider.registerMany
+      ).toHaveBeenCalledTimes(1);
+      expect(strapiMock.admin.services.permission.actionProvider.registerMany).toHaveBeenCalledWith(
+        [
+          {
+            section: 'plugins',
+            displayName: 'Access ImageKit Media Library',
+            uid: permissions.mediaLibrary.read,
+            pluginName: PLUGIN_ID,
           },
-        },
-      };
-
-      // Import the function to test
-      const { addPermissions } = require('../src/bootstrap');
-      await addPermissions(strapiMock);
-
-      // Verify permissions were registered
-      expect(registerManyMock).toHaveBeenCalledWith([
-        {
-          section: 'plugins',
-          displayName: 'Access ImageKit Media Library',
-          uid: permissions.mediaLibrary.read,
-          pluginName: PLUGIN_ID,
-        },
-        {
-          section: 'plugins',
-          displayName: 'Settings: Read',
-          uid: permissions.settings.read,
-          subCategory: 'settings',
-          pluginName: PLUGIN_ID,
-        },
-        {
-          section: 'plugins',
-          displayName: 'Settings: Change',
-          uid: permissions.settings.change,
-          subCategory: 'settings',
-          pluginName: PLUGIN_ID,
-        },
-      ]);
-    });
-  });
-
-  describe('registerTransformResponseDecorator', () => {
-    it('should add transformResponse to API controllers', async () => {
-      // This would test the transform response decorator logic
-      // Implementation would depend on how the decorator is used in the app
+          {
+            section: 'plugins',
+            displayName: 'Settings: Read',
+            uid: permissions.settings.read,
+            subCategory: 'settings',
+            pluginName: PLUGIN_ID,
+          },
+          {
+            section: 'plugins',
+            displayName: 'Settings: Change',
+            uid: permissions.settings.change,
+            subCategory: 'settings',
+            pluginName: PLUGIN_ID,
+          },
+        ]
+      );
     });
   });
 
   describe('registerUploadProvider', () => {
-    it('should wrap upload provider methods', async () => {
-      // This would test the upload provider registration
-      // Implementation would depend on how the provider is used in the app
+    const strapiMock = getStrapiMock({
+      storeConfig: { uploadEnabled: true },
+      config: { uploadEnabled: true },
+    });
+
+    describe('upload is enabled', () => {
+      beforeEach(() => {
+        bootstrap({ strapi: strapiMock });
+        strapiMock
+          .plugin('imagekit')
+          .service('settings')
+          .getSettings.mockResolvedValue({ uploadEnabled: true });
+      });
+
+      it('upload is called from provider', async () => {
+        expect(uploadServiceMock.upload).toHaveBeenCalledTimes(0);
+        await strapiMock.plugin('upload').provider.upload({});
+        expect(uploadServiceMock.upload).toHaveBeenCalledTimes(1);
+      });
+
+      it('uploadStream is called from provider', async () => {
+        expect(uploadServiceMock.uploadStream).toHaveBeenCalledTimes(0);
+        await strapiMock.plugin('upload').provider.uploadStream({});
+        expect(uploadServiceMock.uploadStream).toHaveBeenCalledTimes(1);
+      });
+
+      it('delete is called from provider', async () => {
+        expect(uploadServiceMock.delete).toHaveBeenCalledTimes(0);
+        await strapiMock.plugin('upload').provider.delete({});
+        expect(uploadServiceMock.delete).toHaveBeenCalledTimes(1);
+      });
+
+      it('isPrivate is called from provider', async () => {
+        expect(uploadServiceMock.isPrivate).toHaveBeenCalledTimes(0);
+        await strapiMock.plugin('upload').provider.isPrivate({});
+        expect(uploadServiceMock.isPrivate).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('upload is disabled', () => {
+      beforeEach(() => {
+        bootstrap({ strapi: strapiMock });
+        strapiMock
+          .plugin('imagekit')
+          .service('settings')
+          .getSettings.mockResolvedValue({ uploadEnabled: false });
+      });
+
+      it('upload is called from provider', async () => {
+        expect(uploadServiceMock.upload).toHaveBeenCalledTimes(0);
+        await strapiMock.plugin('upload').provider.upload({});
+        expect(uploadServiceMock.upload).toHaveBeenCalledTimes(0);
+      });
+
+      it('uploadStream is called from provider', async () => {
+        expect(uploadServiceMock.uploadStream).toHaveBeenCalledTimes(0);
+        await strapiMock.plugin('upload').provider.uploadStream({});
+        expect(uploadServiceMock.uploadStream).toHaveBeenCalledTimes(0);
+      });
+
+      it('delete is called from provider', async () => {
+        expect(uploadServiceMock.delete).toHaveBeenCalledTimes(0);
+        await strapiMock.plugin('upload').provider.delete({});
+        expect(uploadServiceMock.delete).toHaveBeenCalledTimes(0);
+      });
+
+      it('isPrivate is called from provider', async () => {
+        expect(uploadServiceMock.isPrivate).toHaveBeenCalledTimes(0);
+        await strapiMock.plugin('upload').provider.isPrivate({});
+        expect(uploadServiceMock.isPrivate).toHaveBeenCalledTimes(0);
+      });
     });
   });
 });
