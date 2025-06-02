@@ -10,6 +10,7 @@ const config: JestConfigWithTsJest = {
   coverageDirectory: './coverage/',
   collectCoverage: true,
   reporters: ['default', 'jest-junit'],
+  collectCoverageFrom: ['server/src/**/*.{js,jsx,ts,tsx}'],
   globals: {
     'ts-jest': {
       tsconfig: './tsconfig.test.json',
