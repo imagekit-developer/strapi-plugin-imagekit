@@ -2,8 +2,6 @@
 
 # Strapi Plugin for ImageKit.io
 
-<!-- [![Node CI](https://github.com/imagekit-developer/strapi-plugin-imagekit/workflows/Node%20CI/badge.svg)](https://github.com/imagekit-developer/strapi-plugin-imagekit/) -->
-
 [![npm version](https://img.shields.io/npm/v/strapi-plugin-imagekit)](https://www.npmjs.com/package/strapi-plugin-imagekit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Twitter Follow](https://img.shields.io/twitter/follow/imagekitio?label=Follow&style=social)](https://twitter.com/ImagekitIo)
@@ -14,16 +12,16 @@ ImageKit is a complete media storage, optimization, and transformation solution 
 
 ## Table of Contents
 
-1. [Features](#features)
-2. [Requirements](#requirements)
-3. [Installation](#installation)
-4. [Configuration](#configuration)
-   - [Plugin Configuration](#plugin-configuration)
-   - [Environment Variables](#environment-variables)
-   - [Security Middleware](#security-middleware)
-5. [Usage](#usage)
-   - [Media Library](#media-library)
-   - [Programmatic Usage](#programmatic-usage)
+1. [What You'll Get](#what-youll-get)
+2. [Before You Start](#before-you-start)
+3. [Installation Steps](#installation-steps)
+4. [Setting Up Your Plugin](#setting-up-your-plugin)
+   - [Configure in Admin UI](#configure-in-admin-ui)
+   - [Set Environment Variables](#set-environment-variables)
+   - [Update Security Settings](#update-security-settings)
+5. [How to Use](#how-to-use)
+   - [Working with Media Library](#working-with-media-library)
+   - [Access in Your Code](#access-in-your-code)
 6. [Troubleshooting](#troubleshooting)
 7. [Contributing](#contributing)
 8. [License](#license)
@@ -31,44 +29,37 @@ ImageKit is a complete media storage, optimization, and transformation solution 
 
 ## Features
 
-- **Media Library Integration**: Browse and manage your ImageKit media library directly in Strapi
-- **Bulk Import**: Import existing ImageKit assets into Strapi with a single click
-- **Optimized Delivery**: Serve optimized images and videos through ImageKit
-- **Upload**: Upload new files to ImageKit directly from the Strapi media library
+- **Manage Media in One Place**: Access and manage all your ImageKit assets directly within Strapi
+- **Import with One Click**: Bring existing ImageKit assets into Strapi without re-uploading files
+- **Deliver Optimized Assets**: Automatically optimize and transform images and videos using ImageKit's CDN
+- **Upload Directly**: Send files straight to ImageKit when uploading to Strapi
 
 ## Requirements
 
 Complete requirements are exact same as for of Strapi itself and can be found in [Strapi documentation](https://docs.strapi.io/cms/quick-start).
 
-Minimum environment requirements:
-
-- Node.js >= 18.x <= 20.x
-- Yarn >= 4.9.1
+- Strapi v5
+- An [ImageKit account](https://imagekit.io/registration/) (sign up if you don't have one)
 
 ## Installation
 
-### From the command line
-
-You can install this plugin from NPM within your Strapi project.
+Open your terminal, navigate to your Strapi project directory, and run one of the following commands:
 
 ```bash
-# Using yarn
+# If you use Yarn (recommended)
 yarn add strapi-plugin-imagekit
 
-# Using npm
+# If you use npm
 npm install strapi-plugin-imagekit --save
 ```
 
-Once installed, you must re-build your Strapi instance.
+After installation, rebuild your Strapi instance to register the plugin:
 
 ```bash
-yarn build
-yarn develop
-```
+# Complete rebuild
+yarn build && yarn develop
 
-Alternatively, you can run Strapi in development mode with `--watch-admin` option:
-
-```bash
+# OR development mode with auto-reload for admin panel
 yarn develop --watch-admin
 ```
 
@@ -78,95 +69,90 @@ You can now configure the plugin in the Strapi admin panel.
 
 ## Configuration
 
-To use the plugin, you must first [create an ImageKit account](https://imagekit.io/registration/) if you don't have one already.
+### Configure in Admin UI
 
-Then you can configure your Strapi instance using the dedicated Settings page.
+Setup is fast and easy through the Strapi admin panel. Follow these steps:
 
-### Settings Page Configuration Guide
+1. Go to **Settings** in the main sidebar
+2. Find and click on **ImageKit** under PLUGINS section
 
-The ImageKit plugin offers a straightforward settings page within your Strapi admin panel. To get there:
+You'll see three configuration sections that you should complete in order:
 
-1. Navigate to **Settings** from the main sidebar.
-2. Find the **ImageKit Plugin** section and click on **Configuration**.
+#### 1. Enter Your API Credentials
 
-Here's a breakdown of the available options:
+First, get your credentials from the [ImageKit dashboard](https://imagekit.io/dashboard/developer/api-keys):
 
-#### Core Plugin Setup
+1. Copy your **Public Key** (starts with `public_`) from ImageKit and paste it in the first field
+2. Copy your **Private Key** (starts with `private_`) from ImageKit and paste it in the second field
+3. Enter your **URL Endpoint** from your [ImageKit URL endpoints page](https://imagekit.io/dashboard/url-endpoints) - it looks like `https://ik.imagekit.io/your_imagekit_id`
 
-First, **enable the plugin** using the toggle. This activates ImageKit's media processing for your Strapi application.
+#### 2. Configure Media Delivery
 
-Next, you'll need to provide your **ImageKit URL Endpoint**. You can locate this in your [ImageKit dashboard](https://imagekit.io/dashboard/url-endpoints); it usually follows the format `https://ik.imagekit.io/your_imagekit_id`. This endpoint is crucial for the plugin to connect to your ImageKit account.
+After adding your credentials, set up how your media will be served:
 
-To leverage ImageKit's dynamic image manipulation capabilities, turn on **Use Transform URLs**. This allows you to apply transformations (like resizing, cropping, and optimization) directly via URL parameters.
+1. Toggle **Enable Plugin** to ON to activate the integration
+2. Enable **Use Transform URLs** if you want to wish to use ImageKit's transformation capabilities for responsive images
+3. If you need secure access to media:
+   - Enable **Use Signed URLs** (requires valid API keys)
+   - Set an **Expiry** time in seconds (use `0` for never expire, or a specific duration like `3600` for 1 hour)
 
-For enhanced security, especially for private media, enable **Use Signed URLs**. This feature generates time-limited, secure links for your assets. When enabled, you must also set an **Expiry (seconds)** value. This determines how long the signed URL remains valid. Setting it to `0` creates a URL that never expires, but for production environments, a specific expiry duration is recommended.
+#### 3. Set Up Upload Options
 
-#### Enabling and Configuring Uploads
+Decide how uploads should work:
 
-To allow your Strapi application to upload files directly to ImageKit, switch on the **Enable Uploads** toggle. You'll then need to input your ImageKit API keys, you can find the keys in your [ImageKit dashboard](https://imagekit.io/dashboard/developer/api-keys):
+1. Toggle **Enable Uploads** to ON if you want to upload files to ImageKit (requires valid API keys)
+2. Configure additional upload settings:
+   - **Upload Folder**: Set a base path in ImageKit for your uploads (e.g., `/strapi-media`)
+   - **Tags**: Add comma-separated tags to organize your files (e.g., `strapi,content,blog`)
+   - **Overwrite Tags**: Toggle ON to replace existing tags or OFF to add to them
+   - **File Checks**: Add validation rules like `"file.size" <= "5MB"` to enforce upload restrictions
+   - **Mark as Private**: Toggle ON to make uploaded files private (requires signed URLs to access)
 
-- **Public Key**: Your ImageKit.io public key (beginning with `public_`) is used for client-side operations.
-- **Private Key**: Your ImageKit.io private key (starting with `private_`) is used for server-side operations and must be kept confidential. Never expose your private key in frontend code.
+#### 4. Save Your Configuration
 
-If uploads are disabled, your existing ImageKit media will still be accessible, but no new files will be uploaded from Strapi.
+Click the **Save** button in the top-right corner to apply your settings.
 
-#### Fine-Tuning Upload Behavior
-
-Tailor how your files are handled during the upload process with these settings:
-
-- **Upload Folder**: Define a default `folder` path within your ImageKit media library where uploaded files will be stored (e.g., `/website-assets/blog-images`). This path will be combined with any folder structure you might have in your Strapi media library.
-
-- **Automatic Tagging**: Apply `tags` to your uploaded files by providing a comma-separated list (e.g., `blog, hero-image, featured`). Tags help organize and categorize your media in ImageKit.
-
-- **Tag Management**: Decide how tags are handled for existing files with the **Overwrite Tags** option. If enabled, updating a file will replace its current tags with the new ones. If disabled, new tags will be added to the existing set.
-
-- **Server-Side File Validation**: Implement `checks` to validate files before they are stored. You can define rules based on file size, type, or other attributes. For example, to allow only files up to 5MB, you could use a check like `"file.size" <= "5MB"`. This adds a robust layer of security and control over uploaded content.
-
-- **Content Privacy**: For sensitive files, enable **Mark as Private**. This ensures that files are stored as private in ImageKit and can only be accessed via signed URLs.
-
-#### Saving Your Settings
-
-Once you've configured the plugin to your liking, click the **Save** button located at the top-right of the page. The plugin will validate your inputs. If any issues are found (e.g., an incorrectly formatted API key or URL), error messages will guide you to fix them.
-
-> **Important**: Some configuration changes might require a restart of your Strapi server to take full effect. If you encounter unexpected behavior after updating settings, try restarting your server.
+> **Note**: Some changes may require restarting your Strapi server to take full effect.
 
 ### Advanced: Manual Plugin Configuration (config/plugins.js)
 
-While the recommended way to configure the ImageKit plugin is through the Strapi admin settings page, you can also define or override settings directly in your Strapi project's `config/plugins.js` file. This is useful for programmatic configurations, especially for essential credentials.
+If you prefer configuring via code instead of the admin UI, follow these steps:
 
-Settings defined in `config/plugins.js` will take precedence over those set in the admin UI. If a value is not provided here, the plugin will use the admin UI setting, or its internal default if not configured in either place.
-
-Here's an example showing essential credentials pulled from environment variables, with other common settings hardcoded. You can, of course, choose to source more settings from environment variables if needed by parsing them accordingly (e.g., string 'true' to boolean `true`).
+1. Create or update your `config/plugins.js` file with ImageKit configuration:
 
 ```js
 module.exports = ({ env }) => ({
   imagekit: {
     enabled: true,
     config: {
+      // Basic Configuration
       publicKey: env('IMAGEKIT_PUBLIC_KEY'),
       privateKey: env('IMAGEKIT_PRIVATE_KEY'),
       urlEndpoint: env('IMAGEKIT_URL_ENDPOINT'),
 
-      useSignedUrls: false, // Default: false. Set to true to enable signed URLs for private media.
-      expiry: 3600, // Default: 0 (Infinite). URL expiry time in seconds when useSignedUrls is true.
+      // Delivery Configuration
+      enabled: true,
+      useTransformUrls: true,
+      useSignedUrls: false,
+      expiry: 3600, // URL expiry time in seconds when useSignedUrls is true
 
-      useTransformUrls: true, // Default: false. Set to true to use ImageKit's transformation URLs.
+      // Upload Configuration
+      uploadEnabled: true,
 
-      uploadEnabled: true, // Default: false. Master switch for enabling/disabling uploads to ImageKit.
-
+      // Upload Options
       uploadOptions: {
-        folder: '/strapi-uploads/', // Default: '/'. Base folder in ImageKit for uploads.
-        tags: ['strapi', 'media'], // Default: []. Tags to apply by default.
-        overwriteTags: false, // Default: true. True to replace existing tags, false to append.
-        checks: '', // Default: '' (no server-side checks). Example: '"file.size" <= "5MB"'.
-        isPrivateFile: false, // Default: false. True to mark uploaded files as private by default.
+        folder: '/strapi-uploads/',
+        tags: ['strapi', 'media'],
+        overwriteTags: false,
+        checks: '', // Example: '"file.size" <= "5MB"'
+        isPrivateFile: false,
       },
     },
   },
 });
 ```
 
-If you are configuring the plugin via `config/plugins.js` as shown above, ensure these essential environment variables are set in your `.env` file:
+2. Add these variables to your `.env` file:
 
 ```env
 IMAGEKIT_PUBLIC_KEY=your_public_key_here
@@ -175,6 +161,12 @@ IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/your_imagekit_id
 ```
 
 You can, of course, add more environment variables if you choose to configure other optional settings (like `IMAGEKIT_UPLOAD_FOLDER`, `IMAGEKIT_USE_SIGNED_URLS`, etc.) through `env()` calls in your `config/plugins.js`.
+
+3. Restart your Strapi server for changes to take effect:
+
+```bash
+yarn develop
+```
 
 ### Configure Security Middleware (CSP)
 
@@ -196,31 +188,34 @@ module.exports = [
             "'self'",
             'data:',
             'blob:',
-            'ik.imagekit.io', // Essential: Allows loading images directly from ImageKit's main domain.
-            // If you use a custom CNAME with ImageKit (e.g., 'images.yourdomain.com'), add it here too:
+            'ik.imagekit.io', // Add ImageKit domain for images
+            // Add your custom domain if you use one with ImageKit:
             // 'images.yourdomain.com',
           ],
           'media-src': [
             "'self'",
             'data:',
             'blob:',
-            'ik.imagekit.io', // Essential: Allows loading video/audio directly from ImageKit's main domain.
-            // If you use a custom CNAME with ImageKit, add it here too:
+            'ik.imagekit.io', // Add ImageKit domain for videos/audio
+            // Add your custom domain if you use one:
             // 'media.yourdomain.com',
           ],
           'frame-src': [
             "'self'",
             'data:',
             'blob:',
-            'eml.imagekit.io', // Allows embedding frames from 'eml.imagekit.io', which might be used for certain ImageKit embeddable UIs or features.
+            'eml.imagekit.io', // For ImageKit UI components
           ],
           upgradeInsecureRequests: null,
         },
       },
     },
   },
+  // Keep your other middleware entries here
 ];
 ```
+
+> **Important**: If you use a custom domain with ImageKit, uncomment and update the relevant lines with your domain.
 
 ## Contributing
 
