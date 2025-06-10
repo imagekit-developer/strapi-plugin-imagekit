@@ -74,7 +74,7 @@ You can now configure the plugin in the Strapi admin panel.
 Setup is fast and easy through the Strapi admin panel. Follow these steps:
 
 1. Go to **Settings** in the main sidebar
-2. Find and click on **ImageKit** under PLUGINS section
+2. Find the **ImageKit Plugin** section and click on **Configuration**.
 
 You'll see three configuration sections that you should complete in order:
 

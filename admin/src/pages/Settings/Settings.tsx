@@ -268,6 +268,7 @@ const SettingsPage = () => {
                           <NativeField.Input
                             type="text"
                             name="publicKey"
+                            disabled={!canChange}
                             value={values.publicKey}
                             onChange={handleChange}
                             required
@@ -300,6 +301,7 @@ const SettingsPage = () => {
                             value={values.privateKey}
                             onChange={handleChange}
                             required
+                            disabled={!canChange}
                           />
                         </Field>
                       </Grid.Item>
@@ -343,6 +345,7 @@ const SettingsPage = () => {
                             value={values.urlEndpoint}
                             onChange={handleChange}
                             required
+                            disabled={!canChange}
                           />
                         </Field>
                       </Grid.Item>
@@ -362,7 +365,7 @@ const SettingsPage = () => {
                           hint={getTranslated('page.settings.sections.form.base.enabled.hint')}
                         >
                           <Toggle
-                            disabled={!values.urlEndpoint}
+                            disabled={!canChange || !values.urlEndpoint}
                             checked={values.enabled}
                             offLabel={formatMessage({
                               id: 'app.components.ToggleCheckbox.off-label',
@@ -391,6 +394,7 @@ const SettingsPage = () => {
                               )}
                             >
                               <Toggle
+                                disabled={!canChange}
                                 checked={values.useTransformUrls}
                                 offLabel={formatMessage({
                                   id: 'app.components.ToggleCheckbox.off-label',
@@ -418,7 +422,7 @@ const SettingsPage = () => {
                               )}
                             >
                               <Toggle
-                                disabled={!values.publicKey || !values.privateKey}
+                                disabled={!canChange || !values.publicKey || !values.privateKey}
                                 checked={values.useSignedUrls}
                                 offLabel={formatMessage({
                                   id: 'app.components.ToggleCheckbox.off-label',
@@ -445,6 +449,7 @@ const SettingsPage = () => {
                               >
                                 <NumberInput
                                   name="expiry"
+                                  disabled={!canChange}
                                   value={values.expiry}
                                   onValueChange={(e: number) => {
                                     handleChange({
@@ -474,7 +479,7 @@ const SettingsPage = () => {
                           hint={getTranslated('page.settings.sections.form.upload.enabled.hint')}
                         >
                           <Toggle
-                            disabled={!values.publicKey || !values.privateKey}
+                            disabled={!canChange || !values.publicKey || !values.privateKey}
                             checked={values.uploadEnabled}
                             offLabel={formatMessage({
                               id: 'app.components.ToggleCheckbox.off-label',
@@ -524,6 +529,7 @@ const SettingsPage = () => {
                               <NativeField.Input
                                 type="text"
                                 name="uploadOptions.folder"
+                                disabled={!canChange}
                                 value={values.uploadOptions?.folder || ''}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                   setValues(
@@ -554,6 +560,7 @@ const SettingsPage = () => {
                               <NativeField.Input
                                 type="text"
                                 name="uploadOptions.tags"
+                                disabled={!canChange}
                                 value={values.uploadOptions?.tags?.join(',') || ''}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                   const tagsArray = e.target.value
@@ -587,6 +594,7 @@ const SettingsPage = () => {
                               )}
                             >
                               <Toggle
+                                disabled={!canChange}
                                 checked={values.uploadOptions?.overwriteTags || false}
                                 offLabel={formatMessage({
                                   id: 'app.components.ToggleCheckbox.off-label',
@@ -623,6 +631,7 @@ const SettingsPage = () => {
                             >
                               <NativeField.Input
                                 type="text"
+                                disabled={!canChange}
                                 name="uploadOptions.checks"
                                 value={values.uploadOptions?.checks || ''}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -654,6 +663,7 @@ const SettingsPage = () => {
                               )}
                             >
                               <Toggle
+                                disabled={!canChange}
                                 checked={values.uploadOptions?.isPrivateFile || false}
                                 offLabel={formatMessage({
                                   id: 'app.components.ToggleCheckbox.off-label',

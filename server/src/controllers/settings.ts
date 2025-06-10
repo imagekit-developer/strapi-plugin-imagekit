@@ -13,7 +13,16 @@ const controller = ({ strapi }: { strapi: Core.Strapi }) => {
         permissions.render(permissions.settings.change),
       ],
       apply: async (ctx) => {
-        return settingsService.getSettings();
+        const settings = await settingsService.getSettings();
+
+        if (ctx.state.userAbility.cannot(permissions.render(permissions.settings.change))) {
+          return {
+            ...settings,
+            privateKey: Array.from({ length: settings.privateKey.length }, () => '*').join(''),
+          };
+        }
+
+        return settings;
       },
     },
     updateSettings: {
