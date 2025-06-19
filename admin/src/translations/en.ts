@@ -50,7 +50,7 @@ const en = {
             },
             useSignedUrls: {
               label: 'Use signed urls',
-              hint: 'Secure your media with time-limited signed URLs',
+              hint: 'Secure your media with time-bound signed URLs',
             },
             expiry: {
               label: 'URL Expiry Time',

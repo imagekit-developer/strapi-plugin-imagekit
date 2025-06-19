@@ -18,16 +18,12 @@ const MediaLibraryPage = () => {
   const mediaLibrary = useRef<ImagekitMediaLibraryWidget>(null);
 
   const handleMediaSelection = useCallback(async (payload: any) => {
-    // Only proceed if assets were selected
     if (!payload || !payload.data || !payload.data.length) {
       return;
     }
 
     const assets = payload.data;
-
-    console.log('assets', assets);
     try {
-      // Use passed assets or get selected assets from the media library widget
       const assetData = assets || [];
 
       if (!assetData.length) {
@@ -41,7 +37,6 @@ const MediaLibraryPage = () => {
         return;
       }
 
-      // Define payload and response types for better type safety
       interface WebhookPayload {
         eventType: string;
         data: any[];
@@ -65,8 +60,6 @@ const MediaLibraryPage = () => {
         data: assetData,
       };
 
-      // Call the webhook API
-      // Using axios type to properly type the response
       interface AxiosResponse<T> {
         data: T;
         status: number;
@@ -77,9 +70,7 @@ const MediaLibraryPage = () => {
       const response = (await http.post('/webhook', payload)) as AxiosResponse<WebhookResponse>;
       const data = response.data;
 
-      // Parse the response based on the structured data from the backend
       if (data?.status === 'success') {
-        // Display success notification with stats
         const stats = data.stats || { successful: 0, total: 0, failed: 0 };
 
         toggleNotification({
@@ -93,12 +84,9 @@ const MediaLibraryPage = () => {
           ),
         });
 
-        // Reload the media library if files were imported
         if (stats.successful > 0) {
-          // Could add a refresh function here if needed
         }
       } else if (data?.status === 'warning') {
-        // Show warning notification
         toggleNotification({
           type: 'warning',
           message: formatMessage(
@@ -110,9 +98,8 @@ const MediaLibraryPage = () => {
           ),
         });
       } else {
-        // Fallback for unexpected response format
         toggleNotification({
-          type: 'success',
+          type: 'warning',
           message: formatMessage({
             id: `${camelCase(PLUGIN_ID)}.page.mediaLibrary.notification.import.complete`,
             defaultMessage: 'Import process completed',
@@ -122,7 +109,6 @@ const MediaLibraryPage = () => {
     } catch (error: any) {
       console.error('Error importing from ImageKit:', error);
 
-      // Extract structured error information if available
       const errorResponse = error.response?.data;
       const errorMessage = errorResponse?.message || error.message || 'Unknown error';
       const errorDetails = errorResponse?.details || '';
@@ -149,7 +135,7 @@ const MediaLibraryPage = () => {
         const config: MediaLibraryWidgetOptions = {
           container: '#ik-media-library-container',
           className: 'imagekit-media-library',
-          view: 'inline' as const,
+          view: 'inline',
           renderOpenButton: false,
           mlSettings: {
             toolbar: {
@@ -168,12 +154,12 @@ const MediaLibraryPage = () => {
   }, [handleMediaSelection]);
 
   useEffect(() => {
-    if (containerRef.current) {
+    if (containerRef?.current) {
       initializeMediaLibrary();
     }
 
     return () => {
-      if (mediaLibrary.current) {
+      if (mediaLibrary?.current) {
         mediaLibrary.current.destroy();
       }
     };

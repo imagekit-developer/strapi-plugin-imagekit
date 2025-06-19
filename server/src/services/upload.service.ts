@@ -107,7 +107,7 @@ const uploadService = ({ strapi }: { strapi: Core.Strapi }) => {
       })
     );
     if (response.error) {
-      strapi.log.error(`[ImageKit Upload Service]Error uploading file: ${response.error}`);
+      strapi.log.error(`[ImageKit Upload Service] Error uploading file: ${response.error}`);
       return Promise.reject(response.error);
     }
     const fileDetails = await tryCatch(client.getFileDetails(response.data.fileId));

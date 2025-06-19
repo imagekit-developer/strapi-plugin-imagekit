@@ -4,11 +4,11 @@ import { PLUGIN_ID } from '.';
 const settings = {
   read: 'settings.read',
   change: 'settings.change',
-} as const;
+};
 
 const mediaLibrary = {
   read: 'media-library.read',
-} as const;
+};
 
 type Settings = typeof settings;
 type MediaLibrary = typeof mediaLibrary;
@@ -21,7 +21,7 @@ export const permissions = {
   render,
   settings,
   mediaLibrary,
-} as const;
+};
 
 export type Permissions = typeof permissions;
 
