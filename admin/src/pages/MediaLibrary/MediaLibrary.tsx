@@ -99,10 +99,10 @@ const MediaLibraryPage = () => {
         });
       } else {
         toggleNotification({
-          type: 'warning',
+          type: 'danger',
           message: formatMessage({
             id: `${camelCase(PLUGIN_ID)}.page.mediaLibrary.notification.import.complete`,
-            defaultMessage: 'Import process completed',
+            defaultMessage: 'Import process failed',
           }),
         });
       }
