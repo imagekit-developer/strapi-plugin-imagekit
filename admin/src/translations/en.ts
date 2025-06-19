@@ -1,6 +1,20 @@
 const en = {
   name: 'ImageKit',
   page: {
+    mediaLibrary: {
+      header: {
+        title: 'ImageKit Media Library',
+      },
+      notification: {
+        import: {
+          noFiles: 'No files selected for import',
+          success: 'Successfully imported {successful} of {total} files',
+          warning: 'Import completed with warnings: {message}',
+          complete: 'Import process failed',
+          error: 'Error importing files: {message} {details}'
+        }
+      }
+    },
     settings: {
       state: {
         loading: 'Loading...',
