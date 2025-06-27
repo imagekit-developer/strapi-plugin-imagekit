@@ -44,7 +44,7 @@ jobs:
 
           echo "Publishing $VERSION with $NPM_TAG tag."
 
-          npm publish --tag $NPM_TAG --provenance
+          npm publish --tag $NPM_TAG --provenance --access public
 
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
