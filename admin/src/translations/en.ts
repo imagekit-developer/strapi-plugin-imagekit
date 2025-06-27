@@ -11,9 +11,9 @@ const en = {
           success: 'Successfully imported {successful} of {total} files',
           warning: 'Import completed with warnings: {message}',
           complete: 'Import process failed',
-          error: 'Error importing files: {message} {details}'
-        }
-      }
+          error: 'Error importing files: {message} {details}',
+        },
+      },
     },
     settings: {
       state: {

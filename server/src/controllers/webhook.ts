@@ -8,7 +8,7 @@ const webhookController = ({ strapi }: { strapi: Core.Strapi }) => ({
   async handleWebhook(ctx: any) {
     try {
       const { body } = ctx.request;
-      
+
       // Validate the webhook payload
       if (!body || !body.eventType || !body.data || !Array.isArray(body.data)) {
         return ctx.badRequest({
@@ -17,7 +17,7 @@ const webhookController = ({ strapi }: { strapi: Core.Strapi }) => ({
           details: 'The webhook payload must contain eventType and an array of data items',
         });
       }
-      
+
       if (body.data.length === 0) {
         return ctx.badRequest({
           status: 'error',
@@ -27,11 +27,8 @@ const webhookController = ({ strapi }: { strapi: Core.Strapi }) => ({
       }
 
       // Process the webhook data
-      const result = await strapi
-        .plugin('imagekit')
-        .service('webhook')
-        .processWebhook(body);
-      
+      const result = await strapi.plugin('imagekit').service('webhook').processWebhook(body);
+
       // Check if we got any successful imports
       if (result && result.length > 0) {
         // Add statistics for successful imports vs attempted imports
@@ -61,7 +58,7 @@ const webhookController = ({ strapi }: { strapi: Core.Strapi }) => ({
       }
     } catch (error: any) {
       strapi.log.error('[ImageKit Webhook Controller] Error handling webhook:', error);
-      
+
       // Return a structured error response
       return ctx.badRequest({
         status: 'error',
