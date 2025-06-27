@@ -13,20 +13,16 @@ ImageKit is a complete media storage, optimization, and transformation solution 
 
 ## Table of Contents
 
-1. [What You'll Get](#what-youll-get)
-2. [Features](#features)
-3. [Prerequisites](#prerequisites)
-4. [Installation](#installation)
-5. [Configuration](#configuration)
+1. [Features](#features)
+2. [Prerequisites](#prerequisites)
+3. [Installation](#installation)
+4. [Configuration](#configuration)
    - [Configure in Admin UI](#configure-in-admin-ui)
    - [Advanced: Programmatic Configuration](#advanced-programmatic-configuration-configpluginsjs)
    - [Configure Security Middleware (CSP)](#configure-security-middleware-csp)
-6. [Webhook Integration](#webhook-integration)
-7. [Media Library Integration](#media-library-integration)
-8. [Troubleshooting](#troubleshooting)
-9. [Contributing](#contributing)
-10. [License](#license)
-11. [Support](#support)
+5. [Contributing](#contributing)
+6. [License](#license)
+7. [Support](#support)
 
 ## Features
 
