@@ -35,3 +35,31 @@ jobs:
         with:
           name: strapi-plugin-imagekit-package
           path: strapi-plugin-imagekit-*.tgz
+
+  test:
+    runs-on: ubuntu-latest
+    needs: pack
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
+
+    steps:
+      - name: ⬇️  Check out code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Enable Corepack
+        run: corepack enable
+
+      - name: 🟢  Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: yarn
+
+      - name: 📦  Install deps, build
+        run: |
+          yarn install --frozen-lockfile
+          yarn build
+        env:
+          CI: true
+
+      - name: 🧪 Run tests
+        run: yarn test:unit:ci
