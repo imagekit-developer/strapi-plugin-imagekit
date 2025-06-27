@@ -2,6 +2,7 @@
 
 # Strapi Plugin for ImageKit.io
 
+[![Node CI](https://github.com/imagekit-developer/strapi-plugin-imagekit/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/imagekit-developer/strapi-plugin-imagekit/actions/workflows/ci.yaml)
 [![npm version](https://img.shields.io/npm/v/strapi-plugin-imagekit)](https://www.npmjs.com/package/strapi-plugin-imagekit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Twitter Follow](https://img.shields.io/twitter/follow/imagekitio?label=Follow&style=social)](https://twitter.com/ImagekitIo)
@@ -13,57 +14,67 @@ ImageKit is a complete media storage, optimization, and transformation solution 
 ## Table of Contents
 
 1. [What You'll Get](#what-youll-get)
-2. [Before You Start](#before-you-start)
-3. [Installation Steps](#installation-steps)
-4. [Setting Up Your Plugin](#setting-up-your-plugin)
+2. [Features](#features)
+3. [Prerequisites](#prerequisites)
+4. [Installation](#installation)
+5. [Configuration](#configuration)
    - [Configure in Admin UI](#configure-in-admin-ui)
-   - [Set Environment Variables](#set-environment-variables)
-   - [Update Security Settings](#update-security-settings)
-5. [How to Use](#how-to-use)
-   - [Working with Media Library](#working-with-media-library)
-   - [Access in Your Code](#access-in-your-code)
-6. [Troubleshooting](#troubleshooting)
-7. [Contributing](#contributing)
-8. [License](#license)
-9. [Support](#support)
+   - [Advanced: Programmatic Configuration](#advanced-programmatic-configuration-configpluginsjs)
+   - [Configure Security Middleware (CSP)](#configure-security-middleware-csp)
+6. [Webhook Integration](#webhook-integration)
+7. [Media Library Integration](#media-library-integration)
+8. [Troubleshooting](#troubleshooting)
+9. [Contributing](#contributing)
+10. [License](#license)
+11. [Support](#support)
 
 ## Features
 
-- **Manage Media in One Place**: Access and manage all your ImageKit assets directly within Strapi
-- **Import with One Click**: Bring existing ImageKit assets into Strapi without re-uploading files
-- **Deliver Optimized Assets**: Automatically optimize and transform images and videos using ImageKit's CDN
-- **Upload Directly**: Send files straight to ImageKit when uploading to Strapi
+- **Media Library Integration**: Browse and manage your ImageKit media library directly in Strapi
+- **Bulk Import**: Import existing ImageKit assets into Strapi with a single click
+- **Optimized Delivery**: Serve optimized images and videos through ImageKit
+- **Upload**: Upload new files to ImageKit directly from the Strapi media library
+- **Signed URLs**: Deliver signed URLs for your media assets
 
-## Requirements
+## Prerequisites
 
-Complete requirements are exact same as for of Strapi itself and can be found in [Strapi documentation](https://docs.strapi.io/cms/quick-start).
+Before you begin, you need:
 
-- Strapi v5
+- A Strapi project (v5 or later)
+- Node.js and npm/yarn installed
+- Administrator access to your Strapi instance
 - An [ImageKit account](https://imagekit.io/registration/) (sign up if you don't have one)
+
+You can refer to Strapi's [official documentation](https://docs.strapi.io/cms/quick-start) to understand the prerequisites for running your Strapi instance.
 
 ## Installation
 
-Open your terminal, navigate to your Strapi project directory, and run one of the following commands:
+To install the ImageKit plugin in your Strapi instance, run one of the following commands from your project's root directory:
 
 ```bash
-# If you use Yarn (recommended)
-yarn add strapi-plugin-imagekit
-
-# If you use npm
+# Using NPM
 npm install strapi-plugin-imagekit --save
+
+# Using Yarn (recommended)
+yarn add strapi-plugin-imagekit
 ```
 
-After installation, rebuild your Strapi instance to register the plugin:
+Once installed, you must rebuild your Strapi instance:
 
 ```bash
-# Complete rebuild
-yarn build && yarn develop
+# Using NPM
+npm run build
+npm run develop
+
+# Using Yarn
+yarn build
+yarn develop
 
 # OR development mode with auto-reload for admin panel
 yarn develop --watch-admin
 ```
 
-The **ImageKit** plugin will appear in sidebar and in the Settings section after the app rebuilds.
+The **ImageKit** plugin will appear in the sidebar and Settings section after the app rebuilds.
 
 You can now configure the plugin in the Strapi admin panel.
 
@@ -71,42 +82,44 @@ You can now configure the plugin in the Strapi admin panel.
 
 ### Configure in Admin UI
 
-Setup is fast and easy through the Strapi admin panel. Follow these steps:
+You can configure the ImageKit plugin from within the Strapi admin dashboard. Follow these steps:
 
 1. Go to **Settings** in the main sidebar
 2. Find the **ImageKit Plugin** section and click on **Configuration**.
 
 You'll see three configuration sections that you should complete in order:
 
-#### 1. Enter Your API Credentials
+#### 1. Base Configuration
 
-First, get your credentials from the [ImageKit dashboard](https://imagekit.io/dashboard/developer/api-keys):
+This section contains the essential credentials to connect with your ImageKit account:
 
-1. Copy your **Public Key** (starts with `public_`) from ImageKit and paste it in the first field
-2. Copy your **Private Key** (starts with `private_`) from ImageKit and paste it in the second field
-3. Enter your **URL Endpoint** from your [ImageKit URL endpoints page](https://imagekit.io/dashboard/url-endpoints) - it looks like `https://ik.imagekit.io/your_imagekit_id`
+1. **Public Key**: Obtain your public key (prefixed with `public_`) from the [API Keys section](https://imagekit.io/dashboard/developer/api-keys) of your ImageKit dashboard.
+2. **Private Key**: Copy your private key (prefixed with `private_`) from the same dashboard page. Note: Keep your private key confidential as it grants full access to your ImageKit account.
+3. **URL Endpoint**: Get your endpoint URL (formatted as `https://ik.imagekit.io/your_imagekit_id`) from your [ImageKit URL endpoints page](https://imagekit.io/dashboard/url-endpoints).
 
 #### 2. Configure Media Delivery
 
 After adding your credentials, set up how your media will be served:
 
-1. Toggle **Enable Plugin** to ON to activate the integration
-2. Enable **Use Transform URLs** if you want to wish to use ImageKit's transformation capabilities for responsive images
-3. If you need secure access to media:
-   - Enable **Use Signed URLs** (requires valid API keys)
-   - Set an **Expiry** time in seconds (use `0` for never expire, or a specific duration like `3600` for 1 hour)
+1. **Configure Web Folder Origin**: Add Strapi as a web folder origin in your ImageKit dashboard (ignore if already done). Follow the [Web Server Integration Documentation](https://imagekit.io/docs/integration/web-server) for detailed steps.
+2. **Enable Integration**: Toggle **Enable Plugin** to ON to activate ImageKit integration for media handling. When OFF, Strapi will use the default provider for uploads.
+3. **Enable Transformations**: Toggle **Use Transform URLs** to ON to leverage ImageKit's real-time transformations, generating responsive URLs with automatic format detection and image optimization capabilities. When OFF, original images are served without transformations.
+4. **Configure Secure Access** (recommended):
+   - Enable **Use Signed URLs**
+   - Set an appropriate **Expiry** time (0 for URLs that never expire, or a duration in seconds)
 
-#### 3. Set Up Upload Options
+#### 3. Configure Upload Options
 
 Decide how uploads should work:
 
-1. Toggle **Enable Uploads** to ON if you want to upload files to ImageKit (requires valid API keys)
-2. Configure additional upload settings:
-   - **Upload Folder**: Set a base path in ImageKit for your uploads (e.g., `/strapi-media`)
-   - **Tags**: Add comma-separated tags to organize your files (e.g., `strapi,content,blog`)
-   - **Overwrite Tags**: Toggle ON to replace existing tags or OFF to add to them
-   - **File Checks**: Add validation rules like `"file.size" <= "5MB"` to enforce upload restrictions
-   - **Mark as Private**: Toggle ON to make uploaded files private (requires signed URLs to access)
+1. **Enable Uploads**: Toggle this option ON to upload the files uploaded in Strapi to your ImageKit media library. When OFF, files will be uploaded to the default Strapi storage location. Enabling this option does not upload existing files in Strapi to ImageKit.
+2. **Set Upload Properties**:
+   - **Upload Folder**: Specify a base directory path in ImageKit for organizing your uploads (e.g., `/strapi-uploads/`)
+   - **Tags**: Add comma-separated tags to categorize and filter media assets (e.g., `strapi,media`)
+   - **Overwrite Tags**: Choose whether to replace existing tags or append new ones
+3. **Configure Security & Validation**:
+   - **File Checks**: Define validation rules for uploads such as size limits or allowed file types. See [Upload API Checks](https://imagekit.io/docs/api-reference/upload-file/upload-file) for available options.
+   - **Mark as Private**: Toggle ON to restrict public access to uploaded files (requires signed URLs to access)
 
 #### 4. Save Your Configuration
 
@@ -114,9 +127,13 @@ Click the **Save** button in the top-right corner to apply your settings.
 
 > **Note**: Some changes may require restarting your Strapi server to take full effect.
 
-### Advanced: Manual Plugin Configuration (config/plugins.js)
+### Advanced: Programmatic Configuration (config/plugins.js)
 
-If you prefer configuring via code instead of the admin UI, follow these steps:
+While the primary way to configure the ImageKit plugin is through the Strapi admin settings page, you can also provide default values in your Strapi project's configuration file. This is particularly useful for setting up initial configurations in development or deployment environments.
+
+Settings defined in `config/plugins.js` serve as default values that are copied to the dashboard on the first run of your Strapi application. After this initial setup, any changes made through the admin UI will be stored in the database and will be used instead of the values in the configuration file.
+
+Follow these steps:
 
 1. Create or update your `config/plugins.js` file with ImageKit configuration:
 
