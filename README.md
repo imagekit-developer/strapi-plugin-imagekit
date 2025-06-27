@@ -72,7 +72,9 @@ yarn develop --watch-admin
 
 The **ImageKit** plugin will appear in the sidebar and Settings section after the app rebuilds.
 
-You can now configure the plugin in the Strapi admin panel.
+|                                                                                                                   |                                                                                            |
+| ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| ![](https://ik.imagekit.io/ikmedia/docs_images/integration/strapi/sidebar_screenshot.png?tr=h-960,w-1898,fo-left) | ![](https://ik.imagekit.io/ikmedia/docs_images/integration/strapi/settings_screenshot.png) |
 
 ## Configuration
 
@@ -83,6 +85,8 @@ You can configure the ImageKit plugin from within the Strapi admin dashboard. Fo
 1. Go to **Settings** in the main sidebar
 2. Find the **ImageKit Plugin** section and click on **Configuration**.
 
+![](https://ik.imagekit.io/ikmedia/docs_images/integration/strapi/settings_screenshot.png?tr=h-960,w-1500,fo-right)
+
 You'll see three configuration sections that you should complete in order:
 
 #### 1. Base Configuration
@@ -91,7 +95,9 @@ This section contains the essential credentials to connect with your ImageKit ac
 
 1. **Public Key**: Obtain your public key (prefixed with `public_`) from the [API Keys section](https://imagekit.io/dashboard/developer/api-keys) of your ImageKit dashboard.
 2. **Private Key**: Copy your private key (prefixed with `private_`) from the same dashboard page. Note: Keep your private key confidential as it grants full access to your ImageKit account.
-3. **URL Endpoint**: Get your endpoint URL (formatted as `https://ik.imagekit.io/your_imagekit_id`) from your [ImageKit URL endpoints page](https://imagekit.io/dashboard/url-endpoints).
+3. **URL Endpoint**: Get your endpoint URL (formatted as `https://ik.imagekit.io/your_imagekit_id`) from the same dashboard page.
+
+![ImageKit API Keys Dashboard](https://ik.imagekit.io/ikmedia/docs_images/integration/strapi/api_keys_dashboard.png)
 
 #### 2. Configure Media Delivery
 
