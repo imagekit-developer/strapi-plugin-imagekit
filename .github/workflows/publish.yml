@@ -31,7 +31,7 @@ jobs:
           yarn build
 
           # print the NPM user name for validation
-          yarn npm whoami
+          npm whoami
 
           VERSION=$(node -p "require('./package.json').version" )
 
@@ -44,7 +44,7 @@ jobs:
 
           echo "Publishing $VERSION with $NPM_TAG tag."
 
-          yarn npm publish --tag $NPM_TAG --provenance
+          npm publish --tag $NPM_TAG --provenance
 
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
