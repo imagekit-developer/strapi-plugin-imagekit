@@ -60,18 +60,10 @@ const MediaLibraryPage = () => {
         data: assetData,
       };
 
-      interface AxiosResponse<T> {
-        data: T;
-        status: number;
-        statusText: string;
-        headers: Record<string, string>;
-      }
+      const response = await http.post<WebhookPayload, WebhookResponse>('/webhook', payload);
 
-      const response = (await http.post('/webhook', payload)) as AxiosResponse<WebhookResponse>;
-      const data = response.data;
-
-      if (data?.status === 'success') {
-        const stats = data.stats || { successful: 0, total: 0, failed: 0 };
+      if (response?.status === 'success') {
+        const stats = response.stats || { successful: 0, total: 0, failed: 0 };
 
         toggleNotification({
           type: 'success',
@@ -83,10 +75,7 @@ const MediaLibraryPage = () => {
             { successful: stats.successful, total: stats.total }
           ),
         });
-
-        if (stats.successful > 0) {
-        }
-      } else if (data?.status === 'warning') {
+      } else if (response?.status === 'warning') {
         toggleNotification({
           type: 'warning',
           message: formatMessage(
@@ -94,7 +83,7 @@ const MediaLibraryPage = () => {
               id: `${camelCase(PLUGIN_ID)}.page.mediaLibrary.notification.import.warning`,
               defaultMessage: 'Import completed with warnings: {message}',
             },
-            { message: data.message || 'Some files may not have been imported' }
+            { message: response.message || 'Some files may not have been imported' }
           ),
         });
       } else {
