@@ -103,3 +103,6 @@ const bootstrap = async ({ strapi }: { strapi: Core.Strapi }) => {
 };
 
 export default bootstrap;
+
+// Export functions for testing
+export { addPermissions, registerUploadProvider, saveConfig };

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="16" failures="0" errors="0" time="0.991">
+  <testsuite name="Bootstrap" errors="0" failures="0" skipped="0" timestamp="2025-06-02T16:06:29" time="0.289" tests="11">
+    <testcase classname="Bootstrap saveConfig when config does not exist in store should save default config if no config exists" name="Bootstrap saveConfig when config does not exist in store should save default config if no config exists" time="0.006">
+    </testcase>
+    <testcase classname="Bootstrap saveConfig when config exists in store should not overwrite existing config" name="Bootstrap saveConfig when config exists in store should not overwrite existing config" time="0.001">
+    </testcase>
+    <testcase classname="Bootstrap addPermissions should register all permissions" name="Bootstrap addPermissions should register all permissions" time="0">
+    </testcase>
+    <testcase classname="Bootstrap registerUploadProvider upload is enabled upload is called from provider" name="Bootstrap registerUploadProvider upload is enabled upload is called from provider" time="0.008">
+    </testcase>
+    <testcase classname="Bootstrap registerUploadProvider upload is enabled uploadStream is called from provider" name="Bootstrap registerUploadProvider upload is enabled uploadStream is called from provider" time="0">
+    </testcase>
+    <testcase classname="Bootstrap registerUploadProvider upload is enabled delete is called from provider" name="Bootstrap registerUploadProvider upload is enabled delete is called from provider" time="0">
+    </testcase>
+    <testcase classname="Bootstrap registerUploadProvider upload is enabled isPrivate is called from provider" name="Bootstrap registerUploadProvider upload is enabled isPrivate is called from provider" time="0">
+    </testcase>
+    <testcase classname="Bootstrap registerUploadProvider upload is disabled upload is called from provider" name="Bootstrap registerUploadProvider upload is disabled upload is called from provider" time="0">
+    </testcase>
+    <testcase classname="Bootstrap registerUploadProvider upload is disabled uploadStream is called from provider" name="Bootstrap registerUploadProvider upload is disabled uploadStream is called from provider" time="0.001">
+    </testcase>
+    <testcase classname="Bootstrap registerUploadProvider upload is disabled delete is called from provider" name="Bootstrap registerUploadProvider upload is disabled delete is called from provider" time="0">
+    </testcase>
+    <testcase classname="Bootstrap registerUploadProvider upload is disabled isPrivate is called from provider" name="Bootstrap registerUploadProvider upload is disabled isPrivate is called from provider" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Register" errors="0" failures="0" skipped="0" timestamp="2025-06-02T16:06:29" time="0.698" tests="5">
+    <testcase classname="Register registerSanitizer sanitizer is registered sanitizer is registered" name="Register registerSanitizer sanitizer is registered sanitizer is registered" time="0.003">
+    </testcase>
+    <testcase classname="Register registerSanitizer sanitizer tests should not convert to imagekit url" name="Register registerSanitizer sanitizer tests should not convert to imagekit url" time="0">
+    </testcase>
+    <testcase classname="Register registerSanitizer sanitizer tests should not convert to imagekit url" name="Register registerSanitizer sanitizer tests should not convert to imagekit url" time="0.001">
+    </testcase>
+    <testcase classname="Register registerSanitizer sanitizer tests should convert to imagekit url" name="Register registerSanitizer sanitizer tests should convert to imagekit url" time="0.002">
+    </testcase>
+    <testcase classname="Register registerSanitizer sanitizer tests should convert to imagekit url including formats" name="Register registerSanitizer sanitizer tests should convert to imagekit url including formats" time="0">
+    </testcase>
+  </testsuite>
+</testsuites>
